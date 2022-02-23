@@ -3,12 +3,17 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django import forms
 
 from .models import User
 
 
+class NewPost(forms.Form):
+    post = forms.CharField(widget=forms.Textarea(attrs={"rows":6, "cols":30, "class": 'form-control'}))
+    
+
 def index(request):
-    return render(request, "network/index.html")
+    return render(request, "network/index.html", {"form": NewPost()})
 
 
 def login_view(request):
