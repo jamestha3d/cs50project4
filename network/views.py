@@ -75,8 +75,8 @@ def all_posts(request):
     #put no. of post likes in list[postid]
     #in template file query list    
 
-    for post in posts:
-        post.following = True
+    #for post in posts:
+        #post.following = True
         
     #identify logged in user
     #querydatabase for logged in user
@@ -91,17 +91,12 @@ def all_posts(request):
 def following(request):
     user = request.user
     followings = user.followings.all()
-    posts = {user.posts.order_by("-date").all() for user in followings}
+    #posts = Posts.objects.filter(user in followings)
+    posts = [user.posts.all().order_by("-date") for user in followings]
     emptypost = []
     for post in posts:
         for subset in post:
             emptypost.append(subset)
-
-
-
-
-    
-    
 
    
     return render(request, "network/following.html", {
@@ -142,8 +137,12 @@ def make_post(request):
         content = request.POST["post"]
         user = request.user
         create_post = Posts(content=content, poster=user)
-        #newpost = Posts.objects.create_posts(content=content, poster=user)
         create_post.save()
+        #newpost = Posts.objects.create_posts(content=content, poster=user)
+        #try: 
+            #create_post.save()
+        #except Exception as e:
+            #return HttpResponse("Something went wrong!")
         return HttpResponseRedirect(reverse("profile"))
     else:
         return HttpResponseRedirect(reverse("all_posts"))
@@ -174,12 +173,14 @@ def like(request, post_id):
     if loggedin in post.likers.all():
         #unfollow by removing loggedin user from followers
         post.likers.remove(loggedin)
+        post.likes -= 1
+        post.save()
     #logged in user not following    
     else:
-            #add loggedin user to the followers
-            post.likers.add(loggedin)
-            post.likes += 1
-            post.save()
+        #add loggedin user to the followers
+        post.likers.add(loggedin)
+        post.likes += 1
+        post.save()
             
 
     return HttpResponseRedirect(reverse("all_posts"))

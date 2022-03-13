@@ -20,7 +20,7 @@ class Posts(models.Model):
     likes = models.IntegerField(default=0)
     date = models.DateTimeField(default=datetime.now())
     likers = models.ManyToManyField(User, blank=True, related_name="posts_liked")
-    following = models.BooleanField()
+    #liked = models.BooleanField()
 
     #users = queryset
     #post = Post created normally

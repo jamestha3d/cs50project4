@@ -1,9 +1,13 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
+
+{% load load_functions %}
      {% if user.is_authenticated %}
 
+
      <br><br>
+     <h1> All Posts</h1>
 
     <!--<ul>
     {% for post in posts %}
@@ -26,8 +30,9 @@
 
             <div class="like">
                 <a> {{post.likes}} likes</a>
+                <!-- <a> numlikes = {{ post.id|num_likes }}</a> -->
                 <a href="{% url 'like' post.id %}"> 
-                    {% if like %}
+                    {% if user in post.id|likers %}
                     <!-- make request to server for like-->
                     Unlike
                     {% else %}
@@ -43,6 +48,8 @@
         <h3> No Posts</h3>
         {% endfor %}
     </div>
+
+
 
 
       {% endif %}
