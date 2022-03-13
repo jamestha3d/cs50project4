@@ -1,0 +1,40 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+     {% if user.is_authenticated %}
+
+     <h1> Welcome {{user.username}}</h1>
+
+     <a> following {{ num_following }} </a>
+     <a> followers {{ num_followers }}</a>
+
+     <h3> My Posts</h3>
+
+    <!--{% for post in posts %}
+        <li>{{post}}</li>
+        <br>
+    {% empty %}
+        <h6> You haven't made any posts.</h6>
+    {% endfor %}
+      {% endif %} -->
+
+    <div class="postcontainer">
+    {% for post in posts %}
+        <div class="posts" >
+            
+                <a> {{post.content}}</a>
+            
+                <div class="poster">
+                    <a> {{post.poster.username}}</a>
+                </div>
+            <div class="date">
+                {{post.date}}
+            </div>
+            
+        </div>
+        {% empty%}
+        <h6> No Posts</h6>
+        {% endfor %}
+    </div>
+    
+{% endblock %}

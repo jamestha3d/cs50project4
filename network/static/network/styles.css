@@ -1,0 +1,40 @@
+.posts{
+    width: 50%;
+    height: 20%;
+    padding: 30px;
+    margin: 30px;
+    border: thin;
+    border-style: outset;
+    border-radius: 10px;
+    background-color: #add8e6;
+    
+}
+
+.poster{
+    position:relative; 
+    float: right;
+    width: 20%; 
+    height: 5%;
+    padding: 5px;
+}
+
+.date{
+    position:  relative;
+    float: left;
+    width: 50%;
+    height: 10%;
+    padding: 5px;
+    font-size: 10px;
+    color: darkgrey;
+}
+
+.like{
+    position: relative;
+    float: right;
+}
+
+
+.postcontent{
+    position: relative;
+    float: left;
+}
