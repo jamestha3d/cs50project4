@@ -18,7 +18,17 @@ def num_likes(postid):
 def likers(postid):
 	post = Posts.objects.filter(id=postid)[0]
 	return post.likers.all()
+	
+
+@register.filter
+def pages(paginator):
 	pass
+
+@register.filter
+def next_page():
+	pass
+
+
 
 	
 

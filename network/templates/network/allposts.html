@@ -7,7 +7,7 @@
 
 
      <br><br>
-     <h1> All Posts</h1>
+     <h1> All Posts, {{ posts_count}}</h1>
 
     <!--<ul>
     {% for post in posts %}
@@ -19,36 +19,79 @@
 
     
     <div class="postcontainer">
+        <a> {{posts}}</a>
+
         {% for post in posts %}
         <div class="posts" >
-            
-            <a> {{post.content}}</a>
-            
-            <div class="poster">
-                <a> {{post.poster.username}}</a>
+            <div class="posthead">
+
+                <div class="poster">
+                    <a href="{% url 'user' post.poster.username %}"> {{post.poster.username}}</a>
+                </div>
+                <div id ="postdiv{{post.id}}" class="postcontent">
+                    <a> {{post.content}}</a>
+                </div>  
+                
+            </div>
+            <div class="postbody">
+
+                <div class="like">
+                    <a> {{post.likes}} likes</a>
+                    <!-- <a> numlikes = {{ post.id|num_likes }}</a> -->
+                    <a href="{% url 'like' post.id %}"> 
+                        {% if user in post.id|likers %}
+                        <!-- make request to server for like-->
+                        Unlike
+                        {% else %}
+                        Like
+                        {% endif %}
+                    </a>
+                    {{post.num_likes}}
+                </div>
+
+                <div class="date">
+                    {{post.date}}
+                </div>
+                <div class="edit">
+                {% if post.poster.id == user.id %}
+                <a href="{% url 'edit' post.id %}"> Edit </a>
+                {% endif %}
+                </div>
             </div>
 
-            <div class="like">
-                <a> {{post.likes}} likes</a>
-                <!-- <a> numlikes = {{ post.id|num_likes }}</a> -->
-                <a href="{% url 'like' post.id %}"> 
-                    {% if user in post.id|likers %}
-                    <!-- make request to server for like-->
-                    Unlike
-                    {% else %}
-                    Like
-                    {% endif %}
-                </a>
-            </div>
-            <div class="date">
-                {{post.date}}
-            </div>
+
+            
         </div>
         {% empty %}
         <h3> No Posts</h3>
         {% endfor %}
     </div>
+    {{page.has_previous}}
 
+
+
+
+{% if posts.has_other_pages %}
+  <ul class="pagination">
+    {% if posts.has_previous %}
+      <li><a href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in posts.paginator.page_range %}
+      {% if posts.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if posts.has_next %}
+      <li><a href="?page={{ posts.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
 
 
 

@@ -1,0 +1,17 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+     {% if user.is_authenticated %}
+
+     <h1> Edit Post</h1>
+
+    <form action="{% url 'edit' post_id %}" method="post">
+        <div class="form-group" style="padding: 40px; width: 80%;">
+        {% csrf_token %}
+        {{ form }}    
+        <input type="submit" value="Post">
+        </div>
+    </form>
+
+      {% endif %}
+{% endblock %}

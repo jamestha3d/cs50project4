@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django import forms
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import *
 
@@ -70,57 +71,70 @@ def register(request):
 def all_posts(request):
     user = request.user
     posts = Posts.objects.all().order_by("-date")
+    posts_count = posts.count()
+    current_page = request.GET.get('page', 1)
 
-    #create empty list populated with zeros of size total posts
-    #put no. of post likes in list[postid]
-    #in template file query list    
+    paginator = Paginator(posts, 10)
+    try:
+        page = paginator.page(current_page)
+    except PageNotAnInteger:
+        page = paginator.page(1)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
 
-    #for post in posts:
-        #post.following = True
-        
-    #identify logged in user
-    #querydatabase for logged in user
-    #get all posts in list
-    #pass list to template
+
     return render(request, "network/allposts.html", {
         "user": user,
-        "posts": posts,
-        
+        "posts": page,
+        "posts_count": posts_count
         })
 
 def following(request):
     user = request.user
     followings = user.followings.all()
     #posts = Posts.objects.filter(user in followings)
-    posts = [user.posts.all().order_by("-date") for user in followings]
-    emptypost = []
-    for post in posts:
+    posts_list = [user.posts.all().order_by("-date") for user in followings]
+    posts = []
+    for post in posts_list:
         for subset in post:
-            emptypost.append(subset)
+            posts.append(subset)
+
+    current_page = request.GET.get('page', 1)
+
+    paginator = Paginator(posts, 10)
+    try:
+        page = paginator.page(current_page)
+    except PageNotAnInteger:
+        page = paginator.page(1)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
 
    
     return render(request, "network/following.html", {
-        "posts": emptypost,
+        "posts": page,
         "followings": followings
         })
 
 def profile(request):
     user = request.user
     posts = user.posts.order_by("-date").all()
+    posts_count = posts.count()
     num_following = user.followings.all().count() 
     num_followers = user.followers.all().count() 
     return render(request, "network/profile.html", {
         "posts": posts,
         "user": user,
         "num_followers": num_followers,
-        "num_following": num_following
+        "num_following": num_following,
+        "posts_count": posts_count
         })
 
-def user(request, user_id):
+def user(request, username):
     #do something
     loggedin = request.user
-    owner = User.objects.filter(id=user_id)[0]
+    owner = User.objects.filter(username=username)[0]
     posts = owner.posts.order_by("-date").all()
+    posts_count = posts.count()
     num_following = owner.followings.all().count() 
     num_followers = owner.followers.all().count() 
     following = loggedin in owner.followers.all()
@@ -129,7 +143,8 @@ def user(request, user_id):
         "user2": owner,
         "num_followers": num_followers,
         "num_following": num_following,
-        "following": following
+        "following": following,
+        "posts_count": posts_count
         })
 
 def make_post(request):
@@ -146,6 +161,25 @@ def make_post(request):
         return HttpResponseRedirect(reverse("profile"))
     else:
         return HttpResponseRedirect(reverse("all_posts"))
+
+
+def edit(request, post_id):
+
+    if request.method == "POST": 
+        content = request.POST["post"]
+        user = request.user
+        post = Posts.objects.get(pk=post_id)
+        post.content = content
+        #post.date = datetime.now()
+        post.save()
+        
+        return HttpResponseRedirect(reverse("profile"))
+    else:
+        content = Posts.objects.get(pk=post_id).content
+        return render(request, "network/edit.html", {
+            "form": NewPost(initial={"post" : content}),
+            "post_id": post_id
+            })
 
 def follow(request, user_id):
 
@@ -184,6 +218,8 @@ def like(request, post_id):
             
 
     return HttpResponseRedirect(reverse("all_posts"))
+def feed(request):
+    return render(request, "network/feed.html", {})
 
 
     #update html
