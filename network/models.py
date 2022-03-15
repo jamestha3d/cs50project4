@@ -18,7 +18,7 @@ class Posts(models.Model):
     content = models.CharField(max_length=200)
     poster = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     likes = models.IntegerField(default=0)
-    date = models.DateTimeField(default=datetime.now())
+    date = models.DateTimeField(default=timezone.now())
     likers = models.ManyToManyField(User, blank=True, related_name="posts_liked")
     #liked = models.BooleanField()
 

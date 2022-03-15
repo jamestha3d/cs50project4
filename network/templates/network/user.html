@@ -56,13 +56,13 @@
         
         <br>
         {% for post in posts %}
-        <div class="posts" >
+        <div class="posts {%if post.poster.id == user.id%} mypost{% endif %}" >
             <div class="posthead">
                 <div class="poster">
-                    <a href="{% url 'user' post.poster.username %}"> {{post.poster.username.capitalize}}</a>
+                    <a class="postername {%if post.poster.id == user.id%} me{% endif %}" href="{% url 'user' post.poster.username %}"> {{post.poster.username.capitalize}}</a>
                     <div class="edit">
                         {% if post.poster.id == user.id %}
-                        <button class="editlink btn btn-link" id="{% url 'edit' post.id %}"> Edit </button><div class="editform" id="edit{{post.id}}}">
+                        <button class="editlink btn btn-link"> Edit </button><div class="editform" id="edit{{post.id}}}">
                             //insertformhere
                         </div>
                         {% endif %}
@@ -77,7 +77,7 @@
                 <div class="like">
                     <a class="postlikesnum" id="postlike{{post.id}}"> {{post.likes}}</a> <i class="fa-solid fa-heart" style="font-size:15px;color:red;"></i>
                     <!-- <a> numlikes = {{ post.id|num_likes }}</a> -->
-                    <button id="{% url 'like' post.id %}" class="likebutton btn btn-link" data-userid="{{user.id}}" data-postid={{post.id}}> 
+                    <button class="likebutton btn btn-link" data-userid="{{user.id}}" data-postid={{post.id}}> 
                         {% if user in post.id|likers %}
                         <!-- make request to server for like-->
                         Unlike

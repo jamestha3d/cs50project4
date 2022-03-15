@@ -2,6 +2,10 @@
 
 {% block body %}
      {% if user.is_authenticated %}
+{% load load_functions %}
+
+<h1> Welcome to the Network!</h1>
+
 
     <form action="{% url 'make_post' %}" method="post">
         <div class="form-group" style="padding: 40px; width: 80%;">
@@ -11,5 +15,84 @@
         </div>
     </form>
 
+
+    
+    <div class="postcontainer">
+        
+        <br>
+        {% for post in posts %}
+        <div class="posts {%if post.poster.id == user.id%} mypost{% endif %}" >
+            <div class="posthead">
+                <div class="poster">
+                    <a class="postername {%if post.poster.id == user.id%} me{% endif %}" href="{% url 'user' post.poster.username %}"> {{post.poster.username.capitalize}}</a>
+                    <div class="edit">
+                        {% if post.poster.id == user.id %}
+                        <button class="editlink btn btn-link"> Edit </button><div class="editform" id="edit{{post.id}}}">
+                            //insertformhere
+                        </div>
+                        {% endif %}
+                        </div>
+                </div><div id ="postdiv{{post.id}}" class="postcontent" data-postid="{{post.id}}">
+                    <a> {{post.content}}</a>
+                </div>  
+                
+            </div>
+            <div class="postbody">
+
+                <div class="like">
+                    <a class="postlikesnum"> {{post.likes}}</a> <i class="fa-solid fa-heart" style="font-size:15px;color:red;"></i>
+                    <!-- <a> numlikes = {{ post.id|num_likes }}</a> -->
+                    <button  class="likebutton btn btn-link" data-userid="{{user.id}}" data-postid={{post.id}}> 
+                        {% if user in post.id|likers %}
+                        <!-- make request to server for like-->
+                        Unlike
+                        {% else %}
+                        Like
+                        {% endif %}
+                    </button>
+                    
+                </div>
+
+                <div class="date">
+                    {{post.date}}
+                </div>
+                
+            </div>
+          </div>
+
+
+        {% empty %}
+        <h3> No Posts</h3>
+        {% endfor %}
+    </div>
+
+
+
+
+{% if posts.has_other_pages %}
+  <ul class="pagination">
+    {% if posts.has_previous %}
+      <li><a href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in posts.paginator.page_range %}
+      {% if posts.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if posts.has_next %}
+      <li><a href="?page={{ posts.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+
       {% endif %}
 {% endblock %}
+
+

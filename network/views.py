@@ -10,11 +10,22 @@ from .models import *
 
 
 class NewPost(forms.Form):
-    post = forms.CharField(widget=forms.Textarea(attrs={"rows":6, "cols":30, "class": 'form-control'}))
+    post = forms.CharField(widget=forms.Textarea(attrs={"rows":6, "cols":30, "class": 'form-control'}),label="What do you have in mind?")
     
 
 def index(request):
-    return render(request, "network/index.html", {"form": NewPost()})
+    user = request.user
+    posts = Posts.objects.all().order_by("-id")
+    posts_count = posts.count()
+    current_page = request.GET.get('page', 1)
+    page = paginate(posts, current_page)
+
+    return render(request, "network/index.html", {
+        "form": NewPost(),
+        "user": user,
+        "posts": page,
+        "posts_count": posts_count
+        })
 
 
 def login_view(request):
@@ -70,19 +81,10 @@ def register(request):
 
 def all_posts(request):
     user = request.user
-    posts = Posts.objects.all().order_by("-date")
+    posts = Posts.objects.all().order_by("-id")
     posts_count = posts.count()
     current_page = request.GET.get('page', 1)
-
-    paginator = Paginator(posts, 10)
-    try:
-        page = paginator.page(current_page)
-    except PageNotAnInteger:
-        page = paginator.page(1)
-    except EmptyPage:
-        page = paginator.page(paginator.num_pages)
-
-
+    page = paginate(posts, current_page)
     return render(request, "network/allposts.html", {
         "user": user,
         "posts": page,
@@ -91,46 +93,25 @@ def all_posts(request):
 
 def following(request):
     user = request.user
-    followings = user.followings.all()
-    #posts = Posts.objects.filter(user in followings)
-    posts_list = [user.posts.all().order_by("-date") for user in followings]
-    posts = []
-    for post in posts_list:
-        for subset in post:
-            posts.append(subset)
+    posts = Posts.objects.filter(poster__in=user.followings.all()).order_by("-id")
     posts_count= len(posts)
-
     current_page = request.GET.get('page', 1)
-
-    paginator = Paginator(posts, 10)
-    try:
-        page = paginator.page(current_page)
-    except PageNotAnInteger:
-        page = paginator.page(1)
-    except EmptyPage:
-        page = paginator.page(paginator.num_pages)
+    page = paginate(posts, current_page)
 
    
     return render(request, "network/following.html", {
         "posts": page,
-        "followings": followings,
         "posts_count": posts_count
         })
 
 def profile(request):
     user = request.user
-    posts = user.posts.order_by("-date").all()
+    posts = user.posts.all().order_by("-id")
     posts_count = posts.count()
     num_following = user.followings.all().count() 
     num_followers = user.followers.all().count()
     current_page = request.GET.get('page', 1)
-    paginator = Paginator(posts, 10)
-    try:
-        page = paginator.page(current_page)
-    except PageNotAnInteger:
-        page = paginator.page(1)
-    except EmptyPage:
-        page = paginator.page(paginator.num_pages)
+    page = paginate(posts, current_page)
 
     return render(request, "network/profile.html", {
         "posts": page,
@@ -142,24 +123,15 @@ def profile(request):
 
 
 def user(request, username):
-    #do something
-    #loggedin = request.user
     user = request.user
     current_page = request.GET.get('page', 1)
     owner = User.objects.filter(username=username)[0]
-    posts = owner.posts.order_by("-date").all()
+    posts = owner.posts.all().order_by("-id")
     posts_count = posts.count()
     num_following = owner.followings.all().count() 
     num_followers = owner.followers.all().count() 
     following = user in owner.followers.all()
-
-    paginator = Paginator(posts, 10)
-    try:
-        page = paginator.page(current_page)
-    except PageNotAnInteger:
-        page = paginator.page(1)
-    except EmptyPage:
-        page = paginator.page(paginator.num_pages)
+    page = paginate(posts, current_page)
 
     return render(request, "network/user.html", {
         "posts": page,
@@ -176,33 +148,11 @@ def make_post(request):
         user = request.user
         create_post = Posts(content=content, poster=user)
         create_post.save()
-        #newpost = Posts.objects.create_posts(content=content, poster=user)
-        #try: 
-            #create_post.save()
-        #except Exception as e:
-            #return HttpResponse("Something went wrong!")
-        return HttpResponseRedirect(reverse("profile"))
+        return HttpResponseRedirect(reverse("index"))
     else:
-        return HttpResponseRedirect(reverse("all_posts"))
+        return HttpResponseRedirect(reverse("index"))
 
 
-def edit(request, post_id):
-
-    if request.method == "POST": 
-        content = request.POST["post"]
-        user = request.user
-        post = Posts.objects.get(pk=post_id)
-        post.content = content
-        #post.date = datetime.now()
-        post.save()
-        
-        return HttpResponseRedirect(reverse("profile"))
-    else:
-        content = Posts.objects.get(pk=post_id).content
-        return render(request, "network/edit.html", {
-            "form": NewPost(initial={"post" : content}),
-            "post_id": post_id
-            })
 
 def follow(request, user_id):
 
@@ -222,27 +172,8 @@ def follow(request, user_id):
 
     return HttpResponseRedirect(reverse("user", kwargs= {"username": username}))
 
-def like(request, post_id):
 
-    loggedin = User.objects.filter(id = request.user.id)[0]
-    post = Posts.objects.filter(id = post_id)[0]
-    
-    #logged in user already liked this post
-    if loggedin in post.likers.all():
-        #unfollow by removing loggedin user from followers
-        post.likers.remove(loggedin)
-        post.likes -= 1
-        post.save()
-    #logged in user not following    
-    else:
-        #add loggedin user to the followers
-        post.likers.add(loggedin)
-        post.likes += 1
-        post.save()
-    return HttpResponseRedirect(reverse("all_posts"))
-
-
-def feed(request, post_id, content):
+def edit(request, post_id, content):
     post = Posts.objects.get(pk=post_id)
     post.content = content
     #ensure that editor is the post owner
@@ -257,7 +188,7 @@ def feed(request, post_id, content):
     else:
         return HttpResponse("You cannot edit this post!")
 
-def like2(request, post_id):
+def like(request, post_id):
     post = Posts.objects.get(pk=post_id)
     user = request.user
     if user in post.likers.all():
@@ -275,5 +206,17 @@ def like2(request, post_id):
 
 
     #update html
+
+def paginate(posts, current_page):
+
+    paginator = Paginator(posts, 10)
+    try:
+        page = paginator.page(current_page)
+    except PageNotAnInteger:
+        page = paginator.page(1)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
+
+    return page
 
     

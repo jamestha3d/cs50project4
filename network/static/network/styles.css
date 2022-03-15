@@ -16,7 +16,7 @@
     border-radius: 5px;
     /*background-color: #add8e6;*/
     background-color: white;
-    border-color: #CDCDCD;
+    border-color: #D3D3D3;
     
     
 }
@@ -86,4 +86,16 @@
 
 .editform{
     display: none;
+}
+
+.postername{
+    
+}
+
+.me{
+    
+}
+
+.mypost{
+
 }
