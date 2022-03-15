@@ -98,6 +98,7 @@ def following(request):
     for post in posts_list:
         for subset in post:
             posts.append(subset)
+    posts_count= len(posts)
 
     current_page = request.GET.get('page', 1)
 
@@ -112,7 +113,8 @@ def following(request):
    
     return render(request, "network/following.html", {
         "posts": page,
-        "followings": followings
+        "followings": followings,
+        "posts_count": posts_count
         })
 
 def profile(request):
@@ -120,26 +122,47 @@ def profile(request):
     posts = user.posts.order_by("-date").all()
     posts_count = posts.count()
     num_following = user.followings.all().count() 
-    num_followers = user.followers.all().count() 
+    num_followers = user.followers.all().count()
+    current_page = request.GET.get('page', 1)
+    paginator = Paginator(posts, 10)
+    try:
+        page = paginator.page(current_page)
+    except PageNotAnInteger:
+        page = paginator.page(1)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
+
     return render(request, "network/profile.html", {
-        "posts": posts,
+        "posts": page,
         "user": user,
         "num_followers": num_followers,
         "num_following": num_following,
         "posts_count": posts_count
         })
 
+
 def user(request, username):
     #do something
-    loggedin = request.user
+    #loggedin = request.user
+    user = request.user
+    current_page = request.GET.get('page', 1)
     owner = User.objects.filter(username=username)[0]
     posts = owner.posts.order_by("-date").all()
     posts_count = posts.count()
     num_following = owner.followings.all().count() 
     num_followers = owner.followers.all().count() 
-    following = loggedin in owner.followers.all()
+    following = user in owner.followers.all()
+
+    paginator = Paginator(posts, 10)
+    try:
+        page = paginator.page(current_page)
+    except PageNotAnInteger:
+        page = paginator.page(1)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
+
     return render(request, "network/user.html", {
-        "posts": posts,
+        "posts": page,
         "user2": owner,
         "num_followers": num_followers,
         "num_following": num_following,
@@ -185,6 +208,7 @@ def follow(request, user_id):
 
     loggedin = User.objects.filter(id = request.user.id)[0]
     tofollow = User.objects.filter(id = user_id)[0]
+    username = tofollow.username
     
     #logged in user already following this person
     if loggedin in tofollow.followers.all():
@@ -196,7 +220,7 @@ def follow(request, user_id):
             tofollow.followers.add(loggedin)
             
 
-    return HttpResponseRedirect(reverse("user", kwargs= {"user_id": user_id}))
+    return HttpResponseRedirect(reverse("user", kwargs= {"username": username}))
 
 def like(request, post_id):
 
@@ -215,11 +239,39 @@ def like(request, post_id):
         post.likers.add(loggedin)
         post.likes += 1
         post.save()
-            
-
     return HttpResponseRedirect(reverse("all_posts"))
-def feed(request):
-    return render(request, "network/feed.html", {})
+
+
+def feed(request, post_id, content):
+    post = Posts.objects.get(pk=post_id)
+    post.content = content
+    #ensure that editor is the post owner
+    if request.user.id == post.poster.id:
+        #post.date = datetime.now()
+        post.save()
+        data = {
+        "status": 201
+        }
+        #return JsonResponse(data)
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse("You cannot edit this post!")
+
+def like2(request, post_id):
+    post = Posts.objects.get(pk=post_id)
+    user = request.user
+    if user in post.likers.all():
+        #unfollow by removing loggedin user from followers
+        post.likers.remove(user)
+        post.likes -= 1
+        post.save()
+    #logged in user not following    
+    else:
+        #add loggedin user to the followers
+        post.likers.add(user)
+        post.likes += 1
+        post.save()
+    return HttpResponse(status=200)
 
 
     #update html

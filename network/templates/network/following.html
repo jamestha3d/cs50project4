@@ -1,24 +1,86 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
+{% load load_functions %}
      {% if user.is_authenticated %}
 
-    <!--<ul>
-    {% for post in emptypost %}
-        <li>{{post}}</li>
-    {% empty %}
-        <h3> No Posts here</h3>
+<h1> Following, {{posts_count}} Posts</h1>
+    {% if posts.has_other_pages %}
+    <ul class="pagination">
+    {% if posts.has_previous %}
+      <li><a href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in posts.paginator.page_range %}
+      {% if posts.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
     {% endfor %}
-    </ul>-->
+    {% if posts.has_next %}
+      <li><a href="?page={{ posts.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+    </ul>
+    {% endif %}
+    
+    <div class="postcontainer">
+        
+        <br>
+        {% for post in posts %}
+        <div class="posts" >
+            <div class="posthead">
+
+                <div class="poster">
+                    <a href="{% url 'user' post.poster.username %}"> {{post.poster.username}}</a>
+                    <div class="edit">
+                        {% if post.poster.id == user.id %}
+                        <a href="{% url 'edit' post.id %}"> Edit </a>
+                        {% endif %}
+                        </div>
+
+                </div>
+                <div id ="postdiv{{post.id}}" class="postcontent">
+                    <a> {{post.content}}</a>
+                </div>  
+                
+            </div>
+            <div class="postbody">
+
+                <div class="like">
+                    <a> {{post.likes}} <i class="fa-solid fa-heart" style="font-size:15px;color:red;"></i></a>
+                    <!-- <a> numlikes = {{ post.id|num_likes }}</a> -->
+                    <a href="{% url 'like' post.id %}"> 
+                        {% if user in post.id|likers %}
+                        <!-- make request to server for like-->
+                        Unlike
+                        {% else %}
+                        Like
+                        {% endif %}
+                    </a>
+                    
+                </div>
+
+                <div class="date">
+                    {{post.date}}
+                </div>
+                
+            </div>
+
+
+            
+        </div>
+        {% empty %}
+        <h3> No Posts</h3>
+        {% endfor %}
+    </div>
+
+    <!--
     <br><br>
     <h1> Following </h1>
-
-
-    <!-- Insert Pagination Page Here-->
-
-    <!-- Page info -->
-    <!-- Posts -->
-    <!-- Next Button -->
 
     <div class="postcontainer">
         <a> {{ page_list}}</a>
@@ -41,7 +103,7 @@
                 <a> {{post.likes}} likes</a>
                 <a href="{% url 'like' post.id %}"> 
                     {% if like %}
-                    <!-- make request to server for like-->
+                    make request to server for like
                     Unlike
                     {% else %}
                     Like
@@ -54,12 +116,12 @@
         <h3> No Posts</h3>
         {% endfor %}
 
-        <!--  Paginator End -->
+         Paginator End 
 
         <a> {{ page_list}}</a>
 
 
-    </div>
+    </div>-->
 
 
 {% if posts.has_other_pages %}
