@@ -21,6 +21,7 @@
     
 }
 
+/* every posters name */
 .poster{
     float: left;
     width: 100%; 
@@ -92,10 +93,12 @@
     
 }
 
+/* current user's username on posts */
 .me{
     
 }
 
+/* current user's posts */
 .mypost{
 
 }

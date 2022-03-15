@@ -93,6 +93,7 @@ def all_posts(request):
 
 def following(request):
     user = request.user
+    #select posts where user in followings of current user
     posts = Posts.objects.filter(poster__in=user.followings.all()).order_by("-id")
     posts_count= len(posts)
     current_page = request.GET.get('page', 1)
@@ -166,8 +167,8 @@ def follow(request, user_id):
         tofollow.followers.remove(loggedin)
     #logged in user not following    
     else:
-            #add loggedin user to the followers
-            tofollow.followers.add(loggedin)
+        #add loggedin user to the followers
+        tofollow.followers.add(loggedin)
             
 
     return HttpResponseRedirect(reverse("user", kwargs= {"username": username}))
@@ -178,12 +179,10 @@ def edit(request, post_id, content):
     post.content = content
     #ensure that editor is the post owner
     if request.user.id == post.poster.id:
-        #post.date = datetime.now()
         post.save()
         data = {
         "status": 201
         }
-        #return JsonResponse(data)
         return HttpResponse(status=200)
     else:
         return HttpResponse("You cannot edit this post!")
@@ -192,20 +191,17 @@ def like(request, post_id):
     post = Posts.objects.get(pk=post_id)
     user = request.user
     if user in post.likers.all():
-        #unfollow by removing loggedin user from followers
+        #unlike by removing loggedin user from likers
         post.likers.remove(user)
         post.likes -= 1
-        post.save()
-    #logged in user not following    
+        post.save()   
     else:
-        #add loggedin user to the followers
+        #add user to likers
         post.likers.add(user)
         post.likes += 1
         post.save()
     return HttpResponse(status=200)
 
-
-    #update html
 
 def paginate(posts, current_page):
 

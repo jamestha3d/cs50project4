@@ -5,13 +5,9 @@ from django.utils import timezone
 
 class User(AbstractUser, models.Model):
     followings = models.ManyToManyField('self', related_name="followers", symmetrical=False)
-    #users = queryset
-    #follower = follower created normally
-    #for user in users.iterator():
-        #follower.followings.add(user)
+
     def __str__(self):
         return f"{self.username} Posts { self.posts.all().count()} follows: {self.followings.all().count()} followers:{self.followers.all().count()} "
-
 
 
 class Posts(models.Model):
@@ -20,19 +16,9 @@ class Posts(models.Model):
     likes = models.IntegerField(default=0)
     date = models.DateTimeField(default=timezone.now())
     likers = models.ManyToManyField(User, blank=True, related_name="posts_liked")
-    #liked = models.BooleanField()
-
-    #users = queryset
-    #post = Post created normally
-    #for user in users.iterator():
-        #post.likes.add(user)
-
 
     def __str__(self):
         return f" \n Post: {self.content} by {self.poster} \n  {self.likers.all().count()} likes"
 
     def num_likes(self):
         return self.likers.all().count()
-
-
-
