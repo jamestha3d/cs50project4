@@ -5,31 +5,31 @@
 {% load load_functions %}
 
 <h1> Welcome to the Network!</h1>
-
-
+<br>
+<div id="dashboard"class="index prepost">
+    <h3>New Post</h3>
     <form action="{% url 'make_post' %}" method="post">
-        <div class="form-group" style="padding: 40px; width: 80%;">
+        <div class="form-group">
         {% csrf_token %}
         {{ form }}    
         <input class="btn btn-primary" type="submit" value="Post">
         </div>
     </form>
+    
 
-
+</div>
     
     <div class="postcontainer">
         
         <br>
         {% for post in posts %}
-        <div class="posts {%if post.poster.id == user.id%} mypost{% endif %}" >
+        <div class="posts  {%if post.poster.id == user.id%} mypost{% endif %}" >
             <div class="posthead">
                 <div class="poster">
                     <a class="postername {%if post.poster.id == user.id%} me{% endif %}" href="{% url 'user' post.poster.username %}"> {{post.poster.username.capitalize}}</a>
                     <div class="edit">
                         {% if post.poster.id == user.id %}
-                        <button class="editlink btn btn-link"> Edit </button><div class="editform" id="edit{{post.id}}}">
-                            //insertformhere
-                        </div>
+                        <button class="editlink btn btn-light btn-sm btn-sml" style="font-size: 12px; padding: 0px 5px;"> Edit </button>
                         {% endif %}
                         </div>
                 </div><div id ="postdiv{{post.id}}" class="postcontent" data-postid="{{post.id}}">
@@ -40,16 +40,13 @@
             <div class="postbody">
 
                 <div class="like">
-                    <a class="postlikesnum"> {{post.likes}}</a> <i class="fa-solid fa-heart" style="font-size:15px;color:red;"></i>
-                    <!-- <a> numlikes = {{ post.id|num_likes }}</a> -->
-                    <button  class="likebutton btn btn-link" data-userid="{{user.id}}" data-postid={{post.id}}> 
+                    <span class="likebutton" data-userid="{{user.id}}" data-postid={{post.id}}> 
                         {% if user in post.id|likers %}
-                        <!-- make request to server for like-->
-                        Unlike
+                        <i class="fa-solid fa-heart"></i>
                         {% else %}
-                        Like
+                        <i class="far fa-heart"></i>
                         {% endif %}
-                    </button>
+                    </span><a class="postlikesnum" style="color: darkgrey"> {{post.likes}}</a> 
                     
                 </div>
 
@@ -58,12 +55,15 @@
                 </div>
                 
             </div>
-          </div>
 
+
+            
+        </div>
 
         {% empty %}
         <h3> No Posts</h3>
         {% endfor %}
+
     </div>
 
 
@@ -90,9 +90,10 @@
     {% endif %}
   </ul>
 {% endif %}
-
+    
 
       {% endif %}
+
 {% endblock %}
 
 

@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django import forms
@@ -10,22 +10,24 @@ from .models import *
 
 
 class NewPost(forms.Form):
-    post = forms.CharField(widget=forms.Textarea(attrs={"rows":6, "cols":30, "class": 'form-control'}),label="What do you have in mind?")
+    post = forms.CharField(widget=forms.Textarea(attrs={"rows":2, "cols":20, "class": 'form-control'}), label='')
     
 
 def index(request):
     user = request.user
-    posts = Posts.objects.all().order_by("-id")
-    posts_count = posts.count()
-    current_page = request.GET.get('page', 1)
-    page = paginate(posts, current_page)
-
-    return render(request, "network/index.html", {
-        "form": NewPost(),
-        "user": user,
-        "posts": page,
-        "posts_count": posts_count
-        })
+    if user.is_authenticated:
+        posts = Posts.objects.all().order_by("-id")
+        posts_count = posts.count()
+        current_page = request.GET.get('page', 1)
+        page = paginate(posts, current_page)
+        return render(request, "network/index.html", {
+            "form": NewPost(),
+            "user": user,
+            "posts": page,
+            "posts_count": posts_count
+            })
+    else:
+        return HttpResponseRedirect(reverse("login"))
 
 
 def login_view(request):
@@ -181,9 +183,9 @@ def edit(request, post_id, content):
     if request.user.id == post.poster.id:
         post.save()
         data = {
-        "status": 201
+        "status": 200
         }
-        return HttpResponse(status=200)
+        return JsonResponse(data)
     else:
         return HttpResponse("You cannot edit this post!")
 
@@ -194,13 +196,21 @@ def like(request, post_id):
         #unlike by removing loggedin user from likers
         post.likers.remove(user)
         post.likes -= 1
-        post.save()   
+        post.save()  
+        data = {
+        "status": 200,
+        "like": True,
+        } 
     else:
         #add user to likers
         post.likers.add(user)
         post.likes += 1
         post.save()
-    return HttpResponse(status=200)
+        data = {
+        "status": 200,
+        "unlike": True,
+        }
+    return JsonResponse(data)
 
 
 def paginate(posts, current_page):

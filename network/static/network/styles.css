@@ -1,16 +1,38 @@
 .body{
-    margin: 30px 50px 30px 50px;
-    padding:  30px 50px 30px 50px;
-    text-align: justify;
+    margin: 10px;
+    padding:  20px;
+}
+.prepost{
+    margin: 20px 50px 20px 50px auto;
+}
+
+.index{
+    
+}
+
+#dashboard{
+    border: thin;
+    border-style: outset;
+    border-color: lightgray;
+    border-radius: 5px;
+    padding: 0px 30px 0px 20px;
+    margin: 0 auto;
 }
 .postcontainer{
-    margin: 20px;
+
+    margin: 0 auto;
+    
+    border: thin;
+    
+    
+    border-radius: 5px;
+
 }
 .posts{
-    width: 70%;
-    height: 40%;
+    width: auto;
+    height: auto;
     padding: 0px 30px 30px 20px;
-    margin: 30px 30px 30px 30px;
+    margin: 15px auto;
     border: thin;
     border-style: outset;
     border-radius: 5px;
@@ -35,24 +57,26 @@
 }
 
 .date{
-    position:  relative;
-    float: left;
-    width: 50%;
-    height: 10%;
-    padding: 5px;
-    font-size: 10px;
+    
+    float: right;
+    width: auto;
+    
+    font-size: 12px;
     color: darkgrey;
+    
 }
 
 .like{
     position: relative;
-    float: right;
+    float: left;
     color: red;
 }
 
 
 .postcontent{
     padding-bottom: 5px;
+    font-size: 15px;
+    width: auto;
     }
 
 .posthead{
@@ -65,6 +89,7 @@
     height: 10%;
     width: 100%;
     font-size: 15px;
+    background-color: black;
 }
 
 .edit2{
@@ -72,7 +97,7 @@
     float: left;
 }
 .edit{
-    float:  right;
+    
     font-size: 13px;
 }
 
@@ -82,7 +107,9 @@
 
 .followboard{
     font-family: monospace;
+
     font-size: 18px;
+    margin: 0 auto;
 }
 
 .editform{
@@ -90,7 +117,7 @@
 }
 
 .postername{
-    
+    color: black;
 }
 
 /* current user's username on posts */
@@ -101,4 +128,39 @@
 /* current user's posts */
 .mypost{
 
+}
+
+.postlikesnum{
+    color: darkgrey;
+}
+
+.likebutton{
+    cursor: pointer;
+}
+
+.fa-heart{
+    font-size:15px;
+    
+}
+
+.editlink{
+    font-size: 0.5 ;
+    size: 5px;
+}
+
+.btm-sml{
+    font-size: 0.5em;
+    padding: 5px 5px;
+}
+
+.loginform{
+    width: 50%;
+    margin: 0 auto;
+    
+}
+
+textarea{
+    width: 90%;
+    min-width: 75px;
+    resize: none;
 }
