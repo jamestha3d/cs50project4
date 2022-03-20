@@ -1,6 +1,7 @@
 .body{
     margin: 10px;
     padding:  20px;
+    background-color: ;
 }
 .prepost{
     margin: 20px 50px 20px 50px auto;
@@ -9,18 +10,46 @@
 .index{
     
 }
+.user_name{
+    font-size: 20px;
+    font-weight: bolder;
+}
 
-#dashboard{
+.dashboard{
     border: thin;
     border-style: outset;
-    border-color: lightgray;
+    border-color: #DCDCDC;
     border-radius: 5px;
     padding: 0px 30px 0px 20px;
     margin: 0 auto;
+    width: 60%;
+    background-color:  white;
+}
+.dashboard_user{
+    border: thin;
+    border-style: outset;
+    border-color: lightgrey;
+    border-radius: 5px;
+    margin: 0 auto;
+    box-shadow: 0;
+    display: none;
+    width: 60%;
+    background-color:  white;
+}
+
+.followboard{
+    margin: 50px auto;
+    width: 60%;
+}
+
+.followbutton:hover {
+    
+
 }
 .postcontainer{
 
     margin: 0 auto;
+    width: 60%;
     
     border: thin;
     
@@ -33,12 +62,13 @@
     height: auto;
     padding: 0px 30px 30px 20px;
     margin: 15px auto;
+    background-color: white;
+    border-color: gray;
     border: thin;
     border-style: outset;
     border-radius: 5px;
-    /*background-color: #add8e6;*/
-    background-color: white;
-    border-color: #D3D3D3;
+    box-shadow: 0;
+    /*background-color: #add8e6;*/*/
     
     
 }
@@ -134,7 +164,7 @@
     color: darkgrey;
 }
 
-.likebutton{
+.likebutton {
     cursor: pointer;
 }
 
@@ -164,3 +194,10 @@ textarea{
     min-width: 75px;
     resize: none;
 }
+
+.dashhead{
+    background-color: lightgrey;
+    width: 100%;
+    position: relative;
+}
+

@@ -83,15 +83,18 @@ def register(request):
 
 def all_posts(request):
     user = request.user
-    posts = Posts.objects.all().order_by("-id")
-    posts_count = posts.count()
-    current_page = request.GET.get('page', 1)
-    page = paginate(posts, current_page)
-    return render(request, "network/allposts.html", {
-        "user": user,
-        "posts": page,
-        "posts_count": posts_count
-        })
+    if user.is_authenticated:
+        posts = Posts.objects.all().order_by("-id")
+        posts_count = posts.count()
+        current_page = request.GET.get('page', 1)
+        page = paginate(posts, current_page)
+        return render(request, "network/allposts.html", {
+            "user": user,
+            "posts": page,
+            "posts_count": posts_count
+            })
+    else:
+        return HttpResponseRedirect(reverse("login"))
 
 def following(request):
     user = request.user
@@ -162,7 +165,6 @@ def follow(request, user_id):
     loggedin = User.objects.filter(id = request.user.id)[0]
     tofollow = User.objects.filter(id = user_id)[0]
     username = tofollow.username
-    
     #logged in user already following this person
     if loggedin in tofollow.followers.all():
         #unfollow by removing loggedin user from followers
@@ -171,9 +173,13 @@ def follow(request, user_id):
     else:
         #add loggedin user to the followers
         tofollow.followers.add(loggedin)
-            
 
-    return HttpResponseRedirect(reverse("user", kwargs= {"username": username}))
+    data = {
+    "status": 200,
+    "follow": True,
+    }
+
+    return JsonResponse(data)
 
 
 def edit(request, post_id, content):
@@ -224,5 +230,10 @@ def paginate(posts, current_page):
         page = paginator.page(paginator.num_pages)
 
     return page
+
+
+
+
+
 
     

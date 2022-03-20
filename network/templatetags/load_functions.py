@@ -4,10 +4,6 @@ from network.models import *
 register = template.Library()
 
 
-def cut(value, arg):
-    """Removes all values of arg from the given string"""
-    return value.replace(arg, '')
-
 #postlikes
 @register.filter
 def num_likes(postid):
@@ -21,12 +17,18 @@ def likers(postid):
 	
 
 @register.filter
-def pages(paginator):
-	pass
+def following(user_id):
+	user = User.objects.get(pk=user_id)
+	following_list = user.followings.all()
+	return following_list
+	
 
 @register.filter
-def next_page():
-	pass
+def followers(user_id):
+	user = User.objects.get(pk=user_id)
+	followers_list = user.followers.all()
+	return followers_list
+	
 
 
 

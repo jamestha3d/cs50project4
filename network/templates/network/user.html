@@ -5,31 +5,62 @@
 {% load load_functions %}
      {% if user.is_authenticated %}
 
-    <h1> {{user2.username.capitalize}}</h1>
+    
     
     <div class="followboard">
-    
-    <a> following:{{ num_following }} </a>
-    <a> followers:{{ num_followers }}</a>
+        <h1> {{user2.username.capitalize}}</h1>
+        <p> <a id="num_following">{{num_following}}</a> Following&nbsp;&nbsp; <a id=num_followers>{{num_followers}}</a> Followers</p>
 
-   
+       
 
 
-    {% if user2.id != user.id %}
+        {% if user2.id != user.id %}
 
-    <a href="{% url 'follow' user2.id %}"> 
-        {% if following %}
-            unfollow
-        {% else %}
-           Follow
-        {% endif %} 
-    </a>
-    {% endif %}
-    
+        <a id="follow" class=" followbutton btn {% if following %} btn-danger {% else %} btn-primary {% endif %}" 
+        data-userid={{user2.id}} data-following={{following}} style="color:white"> 
+            {% if following %}
+             <i class="fa-solid fa-user-large-slash"></i> Unfollow
+            {% else %}
+             <i class="fa-solid fa-user-plus"></i>  Follow   
+            {% endif %} 
+
+            
+        </a>
+        {% endif %}
+        <br><br>
+        <h3> {{ posts_count}} Posts</h3>
     
     </div>
+    <div class="dashboard_user">
+    <div style="padding: 0px 10px 0px 10px;">
+        <a class="user_name"> {{user2.username.capitalize}}</a>
+    </div>
+    <div class="followbutton" style="margin: 5px;">
+        {% if user2.id != user.id %}
 
-    <h3> {{ posts_count}} Posts</h3>
+        <a href="{% url 'follow' user2.id %}" class="btn {% if following %} btn-danger {% else %} btn-primary {% endif %}" style="font-size: 12px; padding: 5px 5px;">
+            {% if following %}
+                <i class="fa-solid fa-user-large-slash"></i>Unfollow
+                {% else %}
+                <i class="fa-solid fa-user-plus"></i>Follow
+                {% endif %} 
+                {% for follower in user2.followers.all%} {{follower.username}} {% endfor %} 
+            </a>
+        {% endif %}
+        
+    </div>
+
+    <div class="" style="padding: 5px; color: gray;" >
+        <a style="font-weight: bold"> {{ num_following }}</a> <a>Following</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a style="font-weight: bold"> {{ num_followers }}</a> <a>Followers</a>
+    </div>
+    
+    
+
+    </div>
+
+    
     
     <div class="postcontainer">
         
@@ -45,7 +76,7 @@
                         {% endif %}
                         </div>
                 </div><div id ="postdiv{{post.id}}" class="postcontent" data-postid="{{post.id}}">
-                    <a> {{post.content}}</a>
+                    <a> {{post.content.capitalize}}</a>
                 </div>  
                 
             </div>
@@ -78,26 +109,30 @@
 
 
     {% if posts.has_other_pages %}
+    
     <ul class="pagination">
     {% if posts.has_previous %}
-      <li><a href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{posts.previous_page_number}}" aria-label="Previous">&laquo;</a>
+    </li>
     {% else %}
-      <li class="disabled"><span>&laquo;</span></li>
+      <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
     {% endif %}
     {% for i in posts.paginator.page_range %}
       {% if posts.number == i %}
-        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
       {% else %}
-        <li><a href="?page={{ i }}">{{ i }}</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
       {% endif %}
     {% endfor %}
     {% if posts.has_next %}
-      <li><a href="?page={{ posts.next_page_number }}">&raquo;</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">&raquo;</a></li>
     {% else %}
-      <li class="disabled"><span>&raquo;</span></li>
+      <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
     {% endif %}
     </ul>
     {% endif %}
+    
 
     {% endif %}
 {% endblock %}

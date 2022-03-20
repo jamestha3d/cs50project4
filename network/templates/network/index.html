@@ -6,7 +6,7 @@
 
 <h1> Welcome to the Network!</h1>
 <br>
-<div id="dashboard"class="index prepost">
+<div class="dashboard"class="index prepost">
     <h3>New Post</h3>
     <form action="{% url 'make_post' %}" method="post">
         <div class="form-group">
@@ -23,7 +23,7 @@
         
         <br>
         {% for post in posts %}
-        <div class="posts  {%if post.poster.id == user.id%} mypost{% endif %}" >
+        <div class="posts {%if post.poster.id == user.id%} mypost{% endif %}" >
             <div class="posthead">
                 <div class="poster">
                     <a class="postername {%if post.poster.id == user.id%} me{% endif %}" href="{% url 'user' post.poster.username %}"> {{post.poster.username.capitalize}}</a>
@@ -33,7 +33,7 @@
                         {% endif %}
                         </div>
                 </div><div id ="postdiv{{post.id}}" class="postcontent" data-postid="{{post.id}}">
-                    <a> {{post.content}}</a>
+                    <a> {{post.content.capitalize}}</a>
                 </div>  
                 
             </div>
@@ -69,27 +69,30 @@
 
 
 
-{% if posts.has_other_pages %}
-  <ul class="pagination">
+    {% if posts.has_other_pages %}
+    
+    <ul class="pagination">
     {% if posts.has_previous %}
-      <li><a href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{posts.previous_page_number}}" aria-label="Previous">&laquo;</a>
+    </li>
     {% else %}
-      <li class="disabled"><span>&laquo;</span></li>
+      <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
     {% endif %}
     {% for i in posts.paginator.page_range %}
       {% if posts.number == i %}
-        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
       {% else %}
-        <li><a href="?page={{ i }}">{{ i }}</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
       {% endif %}
     {% endfor %}
     {% if posts.has_next %}
-      <li><a href="?page={{ posts.next_page_number }}">&raquo;</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">&raquo;</a></li>
     {% else %}
-      <li class="disabled"><span>&raquo;</span></li>
+      <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
     {% endif %}
-  </ul>
-{% endif %}
+    </ul>
+    {% endif %}
     
 
       {% endif %}
