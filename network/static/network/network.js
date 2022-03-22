@@ -80,7 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
  	});
 
  	//select all like buttons
- 	document.querySelectorAll('.likebutton').forEach(button => {
+ 	likebutton = document.querySelectorAll('.likebutton');
+ 	if (likebutton) {
+ 		likebutton.forEach(button => {
  		button.onclick = () => {
 
  			//get info from data-set property of button	
@@ -111,10 +113,13 @@ document.addEventListener('DOMContentLoaded', () => {
  		}
  		
  	});
+ 	} 
+
 
  	//select the follow button
- 	document.querySelector('#follow').onclick = function () {
-
+ 	followbutton = document.querySelector('#follow');
+ 	if (followbutton) {
+ 		followbutton.onclick = function () {
  		//know the user who wants to follow
  		const user2 = this.dataset.userid;
  		numFollowers = document.querySelector('#num_followers');
@@ -137,10 +142,12 @@ document.addEventListener('DOMContentLoaded', () => {
  		numFollowers.innerHTML = numFollow;
  		follow(user2);
  		console.log(user2);
- 		
  		//follow this person
  		//(send info to server)
+ 		}
  	}
+
+
  } );
 
 
