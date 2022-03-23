@@ -33,7 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
  			button.style.display = "none";
 
  			//find the parent and child elements to access needed element
- 			editform = button.parentElement.parentElement;
+ 			editform = button.parentElement.parentElement.parentElement;
+ 			console.log(editform);
  			postcontent = editform.parentElement.childNodes[2];
  			postid = postcontent.dataset.postid;
  			child = postcontent.childNodes[1];
@@ -145,8 +146,20 @@ document.addEventListener('DOMContentLoaded', () => {
  		//follow this person
  		//(send info to server)
  		}
- 	}
+ 	};
 
+ 	//select delete button
+ 	const deleteButton = document.querySelectorAll('delete');
+ 	if (deleteButton) {
+ 		//execute code
+ 		//display = none or removechild
+ 	};
+
+ 	const comments = document.querySelectorAll('comments');
+ 	if (deleteButton) {
+ 		//execute code
+ 		//display = none or removechild
+ 	}
 
  } );
 

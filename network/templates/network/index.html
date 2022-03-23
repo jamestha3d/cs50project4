@@ -23,15 +23,24 @@
         
         <br>
         {% for post in posts %}
-        <div class="posts {%if post.poster.id == user.id%} mypost{% endif %}" >
-            <div class="posthead">
+        <div class="posts  {%if post.poster.id == user.id%} mypost{% endif %}">
+            <div class="posthead" >
                 <div class="poster">
-                    <a class="postername {%if post.poster.id == user.id%} me{% endif %}" href="{% url 'user' post.poster.username %}"> {{post.poster.username.capitalize}}</a>
-                    <div class="edit">
+                    <div>
+                        <a class="postername {%if post.poster.id == user.id%} me{% endif %}" href="{% url 'user' post.poster.username %}"> {{post.poster.username.capitalize}}</a>
                         {% if post.poster.id == user.id %}
-                        <button class="editlink btn btn-light btn-sm btn-sml" style="font-size: 12px; padding: 0px 5px;"> Edit </button>
+                        <i style="position:relative; cursor:pointer; float: right;" class="fa-solid fa-trash-can"></i>
                         {% endif %}
-                        </div>
+                        <a class="date" style="color: lightgrey;">
+                            {{post.time}}
+                        </a>
+                        <span class="edit">
+                        {% if post.poster.id == user.id %}
+                        <button class="editlink btn btn-light btn-sm btn-sml" style="font-size: 12px; padding: 0px 5px; margin: 0px 20px;"> Edit </button>
+                        {% endif %}
+                        </span> 
+                    </div>
+
                 </div><div id ="postdiv{{post.id}}" class="postcontent" data-postid="{{post.id}}">
                     <a> {{post.content.capitalize}}</a>
                 </div>  
@@ -46,24 +55,24 @@
                         {% else %}
                         <i class="far fa-heart"></i>
                         {% endif %}
-                    </span><a class="postlikesnum" style="color: darkgrey"> {{post.likes}}</a> 
+                    </span><a class="postlikesnum" style="color: darkgrey"> {{post.likes}}</a>
+                    
+                        <a style="cursor: pointer; float:right; color: lightgrey;"> 0 Comments</a> 
+
+                    
+                    
                     
                 </div>
 
-                <div class="date">
-                    {{post.date}}
-                </div>
+
                 
             </div>
+          </div>
 
-
-            
-        </div>
 
         {% empty %}
         <h3> No Posts</h3>
         {% endfor %}
-
     </div>
 
 

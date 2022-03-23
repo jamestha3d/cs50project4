@@ -60,14 +60,13 @@
 .posts{
     width: auto;
     height: auto;
-    padding: 0px 30px 30px 20px;
+    padding: 0px 30px 0px 20px;
     margin: 15px auto;
     background-color: white;
     border-color: gray;
     border: thin;
     border-style: outset;
     border-radius: 5px;
-    box-shadow: 0;
     /*background-color: #add8e6;*/*/
     
     
@@ -87,23 +86,24 @@
 }
 
 .date{
-    
-    float: right;
+    position: relative;
+    top: 5px;
     width: auto;
-    position:  relative;
-    top: -80px;
     font-size: 12px;
-    color: darkgrey;
-    left: 20px;
+    color: lightgrey;
+    margin: 0px 10px;
+    
+    vertical-align: top;
+    font-weight: initial;
     
 }
 
 .like{
-    position: relative;
-    float: left;
+    
     color: red;
+    height: 30px;
+    
 }
-
 
 .postcontent{
     padding-bottom: 5px;
@@ -112,16 +112,15 @@
     }
 
 .posthead{
-    height: 90%;
+    height: auto;
     width: 100%;
     position: relative;
 
 }
 .postbody{
-    height: 10%;
     width: 100%;
     font-size: 15px;
-    background-color: black;
+    
 }
 
 .edit2{
@@ -178,6 +177,8 @@
 .editlink{
     font-size: 0.5 ;
     size: 5px;
+    float: right;
+
 }
 
 .btm-sml{

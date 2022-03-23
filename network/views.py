@@ -150,7 +150,7 @@ def user(request, username):
 
 def make_post(request):
     if request.method == "POST": 
-        content = request.POST["post"]
+        content = request.POST["post"].capitalize()
         user = request.user
         create_post = Posts(content=content, poster=user)
         create_post.save()
