@@ -218,6 +218,22 @@ def like(request, post_id):
         }
     return JsonResponse(data)
 
+def delete(request,post_id):
+
+    post = Posts.objects.get(pk=post_id)
+    user = request.user
+    if request.user.id == post.poster.id:
+        #delete posts
+        post.delete()
+        data = {
+        "status": 200,
+        "delete": True,
+        }
+        return JsonResponse(data)
+    else:
+        return HttpResponse('You do have the authority to delete this post!')
+
+
 
 def paginate(posts, current_page):
 

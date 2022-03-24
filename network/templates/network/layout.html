@@ -67,6 +67,25 @@
             {% block body %}
            
             {% endblock %}
+
+        <div id="myModal" class="modal">
+
+              <!-- Modal content -->
+              <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Confirm Delete</h2>
+                  <span id="close" class="close">&times;</span>
+                  
+                </div>
+                <div class="modal-body">
+                  <p id="modalText">Are you sure you want to delete This Post?</p>
+                  <button id="yesButton" class="btn btn-dark"> YES </button>
+                  <button id="noButton" class="btn btn-dark"> NO </button>
+                </div>
+
+              </div>
+
+            </div>
         </div>
     </body>
 

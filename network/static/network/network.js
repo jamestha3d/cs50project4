@@ -23,6 +23,13 @@ function follow(user) {
 	.then(data => console.log(data));
 }
 
+function deletePost(postid) {
+	//SEND INFO TO SERVER TO UPDATE FOLLOW COUNT
+	fetch(`/delete/${postid}`)
+	.then(response => response.json())
+	.then(data => console.log(data));
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -149,16 +156,63 @@ document.addEventListener('DOMContentLoaded', () => {
  	};
 
  	//select delete button
- 	const deleteButton = document.querySelectorAll('delete');
+ 	const deleteButton = document.querySelectorAll('.trashcan');
  	if (deleteButton) {
- 		//execute code
- 		//display = none or removechild
+ 		deleteButton.forEach(button => {
+ 			button.onclick = () => {
+ 				//get post id
+ 				const postId = button.dataset.postid;
+
+ 				//find parent post.
+ 				const post = button.parentElement.parentElement.parentElement.parentElement;
+ 				const modal = document.querySelector('#myModal')
+ 				modal.style.display = 'block';
+
+				// Get the <span> element that closes the modal
+				const close = document.querySelector("#close");
+
+				const yes = document.querySelector("#yesButton");
+				const no = document.querySelector("#noButton");
+
+				// When the user clicks on <span> (x), close the modal
+				close.onclick = function() {
+				  modal.style.display = "none";
+				}
+
+				// When the user clicks anywhere outside of the modal, close it
+				window.onclick = function(event) {
+				  if (event.target == modal) {
+				    modal.style.display = "none";
+				  }
+				}
+
+				no.onclick = function() {
+				modal.style.display = "none";
+
+				}
+				yes.onclick = function() {
+					
+					//do the rest here
+					modal.style.display = "none";
+					post.parentElement.removeChild(post);
+ 					//send info to server
+ 					deletePost(postId);
+
+				}
+
+		 	}
+
+ 		})
+
  	};
 
  	const comments = document.querySelectorAll('comments');
- 	if (deleteButton) {
+ 	if (comments) {
  		//execute code
  		//display = none or removechild
+ 		//find parent post.
+ 		//find parent post container
+ 		//parent post container removechild(parentpost)
  	}
 
  } );

@@ -1,7 +1,6 @@
 .body{
     margin: 10px;
     padding:  20px;
-    background-color: ;
 }
 .prepost{
     margin: 20px 50px 20px 50px auto;
@@ -46,24 +45,22 @@
     
 
 }
-.postcontainer{
+.postcontainer {
 
     margin: 0 auto;
     width: 60%;
-    
     border: thin;
-    
-    
     border-radius: 5px;
 
 }
-.posts{
+
+.posts {
     width: auto;
     height: auto;
     padding: 0px 30px 0px 20px;
     margin: 15px auto;
     background-color: white;
-    border-color: gray;
+    border-color: lightgrey;
     border: thin;
     border-style: outset;
     border-radius: 5px;
@@ -169,6 +166,10 @@
     cursor: pointer;
 }
 
+.likebutton:hover {
+    color: darkred;
+}
+
 .fa-heart{
     font-size:15px;
     
@@ -203,4 +204,126 @@ textarea{
     width: 100%;
     position: relative;
 }
+
+.trashcan {
+    position:relative;
+    cursor:pointer; 
+    float: right; 
+    color: darkgrey; 
+    font-size: 15px; 
+    top: 2px;
+}
+
+.trashcan:hover {
+    color: red;
+
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 300px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 60%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: lightgrey;
+  color: black;
+}
+
+.modal-body {padding: 2px 16px;}
+
+
+
+
+#settings {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 300px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

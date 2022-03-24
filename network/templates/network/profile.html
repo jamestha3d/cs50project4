@@ -30,7 +30,7 @@
                     <div>
                         <a class="postername {%if post.poster.id == user.id%} me{% endif %}" href="{% url 'user' post.poster.username %}"> {{post.poster.username.capitalize}}</a>
                         {% if post.poster.id == user.id %}
-                        <i style="position:relative; cursor:pointer; float: right;" class="fa-solid fa-trash-can"></i>
+                        <span class="trashcan fa-solid fa-trash-can" data-postid="{{post.id}}"></span>
                         {% endif %}
                         <a class="date" style="color: lightgrey;">
                             {{post.time}}
@@ -108,5 +108,13 @@
     {% endfor %}
       {% endif %} -->
 
+
+    <div id="settings" class="modal">
+        <div> <a href=""> Change Password</a></div>
+        <div> <a href=""> Change Theme</a></div>
+        <div> <a href=""></a> Change Email</div>
+        <div> <a href=""></a> About Us</div>
+
+    </div>
     
 {% endblock %}
