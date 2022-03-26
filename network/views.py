@@ -11,6 +11,7 @@ from .models import *
 
 class NewPost(forms.Form):
     post = forms.CharField(widget=forms.Textarea(attrs={"rows":2, "cols":20, "class": 'form-control'}), label='')
+    post.widget.attrs['placeholder'] = "What's on your mind?"
     
 
 def index(request):
@@ -150,7 +151,7 @@ def user(request, username):
 
 def make_post(request):
     if request.method == "POST": 
-        content = request.POST["post"]
+        content = request.POST["post"].capitalize()
         user = request.user
         create_post = Posts(content=content, poster=user)
         create_post.save()
@@ -217,6 +218,22 @@ def like(request, post_id):
         "unlike": True,
         }
     return JsonResponse(data)
+
+def delete(request,post_id):
+
+    post = Posts.objects.get(pk=post_id)
+    user = request.user
+    if request.user.id == post.poster.id:
+        #delete posts
+        post.delete()
+        data = {
+        "status": 200,
+        "delete": True,
+        }
+        return JsonResponse(data)
+    else:
+        return HttpResponse('You do have the authority to delete this post!')
+
 
 
 def paginate(posts, current_page):

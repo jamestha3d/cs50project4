@@ -23,6 +23,32 @@ function follow(user) {
 	.then(data => console.log(data));
 }
 
+function deletePost(postid) {
+	//SEND INFO TO SERVER TO UPDATE FOLLOW COUNT
+	fetch(`/delete/${postid}`)
+	.then(response => response.json())
+	.then(data => console.log(data));
+}
+
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -33,7 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
  			button.style.display = "none";
 
  			//find the parent and child elements to access needed element
- 			editform = button.parentElement.parentElement;
+ 			editform = button.parentElement.parentElement.parentElement;
+ 			console.log(editform);
  			postcontent = editform.parentElement.childNodes[2];
  			postid = postcontent.dataset.postid;
  			child = postcontent.childNodes[1];
@@ -80,7 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
  	});
 
  	//select all like buttons
- 	document.querySelectorAll('.likebutton').forEach(button => {
+ 	likebutton = document.querySelectorAll('.likebutton');
+ 	if (likebutton) {
+ 		likebutton.forEach(button => {
  		button.onclick = () => {
 
  			//get info from data-set property of button	
@@ -111,10 +140,13 @@ document.addEventListener('DOMContentLoaded', () => {
  		}
  		
  	});
+ 	} 
+
 
  	//select the follow button
- 	document.querySelector('#follow').onclick = function () {
-
+ 	followbutton = document.querySelector('#follow');
+ 	if (followbutton) {
+ 		followbutton.onclick = function () {
  		//know the user who wants to follow
  		const user2 = this.dataset.userid;
  		numFollowers = document.querySelector('#num_followers');
@@ -137,10 +169,71 @@ document.addEventListener('DOMContentLoaded', () => {
  		numFollowers.innerHTML = numFollow;
  		follow(user2);
  		console.log(user2);
- 		
  		//follow this person
  		//(send info to server)
+ 		}
+ 	};
+
+ 	//select delete button
+ 	const deleteButton = document.querySelectorAll('.trashcan');
+ 	if (deleteButton) {
+ 		deleteButton.forEach(button => {
+ 			button.onclick = () => {
+ 				//get post id
+ 				const postId = button.dataset.postid;
+
+ 				//find parent post.
+ 				const post = button.parentElement.parentElement.parentElement.parentElement;
+ 				const modal = document.querySelector('#myModal')
+ 				modal.style.display = 'block';
+
+				// Get the <span> element that closes the modal
+				const close = document.querySelector("#close");
+
+				const yes = document.querySelector("#yesButton");
+				const no = document.querySelector("#noButton");
+
+				// When the user clicks on <span> (x), close the modal
+				close.onclick = function() {
+				  modal.style.display = "none";
+				}
+
+				// When the user clicks anywhere outside of the modal, close it
+				window.onclick = function(event) {
+				  if (event.target == modal) {
+				    modal.style.display = "none";
+				  }
+				}
+
+				no.onclick = function() {
+				modal.style.display = "none";
+
+				}
+				yes.onclick = function() {
+					
+					//do the rest here
+					modal.style.display = "none";
+					post.parentElement.removeChild(post);
+ 					//send info to server
+ 					deletePost(postId);
+
+				}
+
+		 	}
+
+ 		})
+
+ 	};
+
+ 	const comments = document.querySelectorAll('comments');
+ 	if (comments) {
+ 		//execute code
+ 		//display = none or removechild
+ 		//find parent post.
+ 		//find parent post container
+ 		//parent post container removechild(parentpost)
  	}
+
  } );
 
 

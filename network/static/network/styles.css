@@ -1,7 +1,6 @@
-.body{
-    margin: 10px;
-    padding:  20px;
-    background-color: ;
+body{
+
+    background-color: rgba(236, 236, 236, 0.5);
 }
 .prepost{
     margin: 20px 50px 20px 50px auto;
@@ -10,20 +9,26 @@
 .index{
     
 }
+
 .user_name{
     font-size: 20px;
     font-weight: bolder;
 }
 
+#userpage, #followingpage, #allpostspage{
+    text-align: center;
+}
 .dashboard{
     border: thin;
     border-style: outset;
     border-color: #DCDCDC;
     border-radius: 5px;
-    padding: 0px 30px 0px 20px;
-    margin: 0 auto;
+    padding: 20px 30px 40px 20px;
+    margin: 20px auto auto auto;
+
     width: 60%;
     background-color:  white;
+    height: auto;
 }
 .dashboard_user{
     border: thin;
@@ -38,36 +43,50 @@
 }
 
 .followboard{
-    margin: 50px auto;
+    
+    border: thin;
+    border-style: outset;
+    border-color: #DCDCDC;
+    border-radius: 5px;
+    padding: 20px 30px 20px 30px;
+    margin: 20px auto auto auto;
+
     width: 60%;
+    background-color:  white;
+    height: auto;
+    font-family: monospace;
+
+    font-size: 18px;
+    
 }
 
 .followbutton:hover {
     
 
 }
-.postcontainer{
-
-    margin: 0 auto;
+.postcontainer {
+    margin: 20px auto 20px auto;
     width: 60%;
-    
     border: thin;
-    
-    
     border-radius: 5px;
+    border-style: outset;
+    background-color: white;
+    padding-bottom: 70px;
+
+    
 
 }
-.posts{
-    width: auto;
+
+.posts {
+    width: 90%;
     height: auto;
-    padding: 0px 30px 30px 20px;
+    padding: 0px 0px 0px 0px;
     margin: 15px auto;
     background-color: white;
-    border-color: gray;
+    border-color: lightgrey;
     border: thin;
     border-style: outset;
     border-radius: 5px;
-    box-shadow: 0;
     /*background-color: #add8e6;*/*/
     
     
@@ -78,48 +97,60 @@
     float: left;
     width: 100%; 
     height: 20%%;
-    margin: 10px 0px 10px 0px;
+    margin: 0px 0px 10px 0px;
     padding-bottom: 5px;
+    padding: 5px 30px 5px 20px;
     font-size: 18px;
     font-weight: bold;
     position:relative; 
+    background-color: whitesmoke;
     
 }
 
+/* current user's posts */
+.mypost{
+    /*background-color: #b6e3ff;*/
+    background-color: #ddf4ff;
+}
+
 .date{
-    
-    float: right;
-    width: auto;
-    
-    font-size: 12px;
     color: darkgrey;
+    position: relative;
+    top: 5px;
+    width: auto;
+    font-size: 12px;
+    
+    margin: 0px 10px;
+    
+    vertical-align: top;
+    font-weight: initial;
     
 }
 
 .like{
-    position: relative;
-    float: left;
+    
     color: red;
+    height: 30px;
+    
 }
-
 
 .postcontent{
     padding-bottom: 5px;
     font-size: 15px;
     width: auto;
+    padding: 0px 30px 10px 20px;
     }
 
 .posthead{
-    height: 90%;
+    height: 20%;
     width: 100%;
     position: relative;
-
+    
 }
 .postbody{
-    height: 10%;
     width: 100%;
     font-size: 15px;
-    background-color: black;
+    padding: 0px 30px 0px 20px;
 }
 
 .edit2{
@@ -136,10 +167,7 @@
 }
 
 .followboard{
-    font-family: monospace;
 
-    font-size: 18px;
-    margin: 0 auto;
 }
 
 .editform{
@@ -155,10 +183,7 @@
     
 }
 
-/* current user's posts */
-.mypost{
 
-}
 
 .postlikesnum{
     color: darkgrey;
@@ -166,6 +191,10 @@
 
 .likebutton {
     cursor: pointer;
+}
+
+.likebutton:hover {
+    color: darkred;
 }
 
 .fa-heart{
@@ -176,6 +205,8 @@
 .editlink{
     font-size: 0.5 ;
     size: 5px;
+    float: right;
+
 }
 
 .btm-sml{
@@ -200,4 +231,169 @@ textarea{
     width: 100%;
     position: relative;
 }
+
+.trashcan {
+    position:relative;
+    cursor:pointer; 
+    float: right; 
+    color: black; 
+    font-size: 14px; 
+    top: 2px;
+}
+
+.trashcan:hover {
+    color: red;
+    font-size: 16px;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 300px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 60%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: lightgrey;
+  color: black;
+}
+
+.modal-body {padding: 2px 16px;}
+
+
+
+
+settings {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 300px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+
+
+.dropbtn {
+  background-color: #ddf4ff;
+  color: black;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #2980B9;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  float: right;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  margin-top: 50px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+#myDropdown {
+    float: right;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
