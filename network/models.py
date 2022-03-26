@@ -6,6 +6,7 @@ import math
 
 class User(AbstractUser, models.Model):
     followings = models.ManyToManyField('self', related_name="followers", symmetrical=False)
+    color = models.CharField(max_length=200, default='#ddf4ff')
 
     def __str__(self):
         return f"{self.username} Posts { self.posts.all().count()} follows: {self.followings.all().count()} followers:{self.followers.all().count()} "
@@ -15,7 +16,7 @@ class Posts(models.Model):
     content = models.CharField(max_length=200)
     poster = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     likes = models.IntegerField(default=0)
-    date = models.DateTimeField(default=timezone.now())
+    date = models.DateTimeField(default=timezone.now)
     likers = models.ManyToManyField(User, blank=True, related_name="posts_liked")
 
     def __str__(self):
@@ -33,10 +34,10 @@ class Posts(models.Model):
             seconds= diff.seconds
             
             if seconds == 1:
-                return str(seconds) +  "second ago"
+                return "now"
             
             else:
-                return str(seconds) + " seconds ago"
+                return "now"
 
             
 

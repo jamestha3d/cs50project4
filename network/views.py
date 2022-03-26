@@ -11,6 +11,7 @@ from .models import *
 
 class NewPost(forms.Form):
     post = forms.CharField(widget=forms.Textarea(attrs={"rows":2, "cols":20, "class": 'form-control'}), label='')
+    post.widget.attrs['placeholder'] = "What's on your mind?"
     
 
 def index(request):

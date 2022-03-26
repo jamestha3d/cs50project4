@@ -31,21 +31,23 @@
     </head>
     <body>
 
-        <nav class="navbar navbar-expand-sm navbar-light bg-light">
+        <header class="navbar navbar-expand-sm navbar-light flex-column flex-md-row bd-navbar" style="background-color: #ddf4ff">
             <a class="navbar-brand" href="{% url 'index' %}">Network</a>
           
-            <div>
-              <ul class="navbar-nav mr-auto">
+            <div class="navbar-nav-scroll">
+              <ul class="navbar-nav bd-navbar-nav me-auto flex-row">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link {% block profi %}{% endblock %}" href="{% url 'profile' %}"><strong>{{ user.username.capitalize }}</strong></a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                  <a class="nav-link {% block allposts %}{% endblock %}" href="{% url 'all_posts' %}">All Posts</a>
+                  <a class="nav-link {% block allposts %}{% endblock %}" href="{% url 'all_posts' %}">All Posts</a> 
                 </li>
+            
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
+
+                    <li class="nav-item ms-md-auto">
                         <a class="nav-link {% block following %}{% endblock %}" href="{% url 'following' %}">Following</a>
                     </li>
                     <li class="nav-item">
@@ -61,7 +63,7 @@
                 {% endif %}
               </ul>
             </div>
-          </nav>
+          </header>
         
         <div class="body">
             {% block body %}
