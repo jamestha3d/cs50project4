@@ -53,13 +53,29 @@
                         {% endif %}
                     </span><a class="postlikesnum" style="color: darkgrey"> {{post.likes}}</a>
                     
-                        <a style="cursor: pointer; float:right; color: lightgrey;"> 0 Comments</a> 
-
-                    
-                    
+                        <span class="view_comments" style="cursor: pointer; float:right; color: lightgrey;"> <a> </a>{{post.comments.all.count}} Comments<a> </a></span> 
                     
                 </div>
 
+
+                
+            </div>
+            <div class="comments_container" style="width: 100%; display: none; padding: 0px 0px 0px 50px;">
+                <div class="comments">
+                {% for comment in post.comments.all %}
+                    <div class= "comment">
+                        <a class="comment_poster" href="{% url 'user' comment.poster.username %}"> {{comment.poster.username.capitalize}}</a>
+                        <a class="comment_time"> {{comment.time}}</a>
+                        <br>
+                        <a class="comment_content"> {{comment.content}}</a>
+                        
+                    </div>
+                {% endfor %}
+                </div>
+                <div class="type_comment">
+                    <textarea id="text{{post.id}}" class="comment_text_area" autofocus="autofocus" name="comment" rows="2" cols="30" placeholder="Type your comment.."> </textarea>
+                    <button class="comment_submit btn btn-sm" data-postid={{post.id}} data-username="{{user.username}}" style="background-color: #ddf4ff"> Comment </button>
+                </div>
 
                 
             </div>

@@ -159,7 +159,18 @@ def make_post(request):
     else:
         return HttpResponseRedirect(reverse("index"))
 
+def comment(request, post_id, comment):
+    content = comment.capitalize()
+    post = Posts.objects.get(pk=post_id)
+    user = request.user
+    create_comment = Comment(post= post, poster=user, content=content)
+    create_comment.save()
+    data = {
+        "status": 200,
+        "commented": True,
+    }
 
+    return JsonResponse(data)
 
 def follow(request, user_id):
 
@@ -247,6 +258,7 @@ def paginate(posts, current_page):
         page = paginator.page(paginator.num_pages)
 
     return page
+
 
 
 

@@ -30,6 +30,13 @@ function deletePost(postid) {
 	.then(data => console.log(data));
 }
 
+function postComment(postid, comment) {
+	//SEND INFO TO SERVER TO UPDATE FOLLOW COUNT
+	fetch(`/comment/${postid}/${comment}`)
+	.then(response => response.json())
+	.then(data => console.log(data));
+}
+
 function myFunction() {
   document.getElementById("myDropdown").classList.toggle("show");
 }
@@ -168,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
  		}
  		numFollowers.innerHTML = numFollow;
  		follow(user2);
- 		console.log(user2);
+ 		
  		//follow this person
  		//(send info to server)
  		}
@@ -225,15 +232,109 @@ document.addEventListener('DOMContentLoaded', () => {
 
  	};
 
- 	const comments = document.querySelectorAll('comments');
- 	if (comments) {
- 		//execute code
- 		//display = none or removechild
- 		//find parent post.
- 		//find parent post container
- 		//parent post container removechild(parentpost)
+ 	const viewComments = document.querySelectorAll('.view_comments');
+ 	if (viewComments) {
+ 	 	viewComments.forEach(button => {
+ 			button.onclick = () => {	
+ 				parent = button.parentElement.parentElement.parentElement;
+
+ 				//toggle the display of comments block
+ 				commentsBlock = parent.children[2];
+ 				if (commentsBlock.style.display == "none"){
+ 					commentsBlock.style.display = "block"
+
+ 					button.children[0].innerHTML = '&#9650';
+ 					button.style.color = 'darkgrey'
+ 				}
+ 				else{
+ 					commentsBlock.style.display = "none"
+ 					button.children[0].innerHTML = ''
+ 					button.style.color = 'lightgrey'
+ 				}
+ 			}
+
+
+ 		}) 
+
+ 	};
+
+ 	const submitComment = document.querySelectorAll('.comment_submit');
+ 	if (submitComment) {
+ 		submitComment.forEach(button => {
+ 			button.onclick = () =>{
+ 				postId = button.dataset.postid;
+ 				user = button.dataset.username;
+ 				text = `text${postId}`
+ 				comment = document.querySelector(`#${text}`).value.trimLeft();
+ 				document.querySelector(`#${text}`).value = '';
+ 				
+ 				postComment(postId,comment);
+
+
+ 				//create new comment div
+ 				commentDiv = document.createElement('div')
+ 				commentDiv.className = "comment"
+ 				aDate = document.createElement('a')
+ 				aDate.innerHTML = 'now'
+ 				aDate.className = 'comment_time'
+ 				aContent = document.createElement('a')
+ 				aContent.className = "comment_content"
+
+ 				//capitalize comment
+ 				aContent.innerHTML = comment.charAt(0).toUpperCase() + comment.slice(1)
+ 				aPoster = document.createElement('a')
+ 				aPoster.className = "comment_poster"
+ 				aPoster.href= `/user/${user}`
+
+ 				//capitalize username
+ 				user2 = user.charAt(0).toUpperCase() + user.slice(1)
+ 				aPoster.innerHTML = user2
+ 				commentDiv.appendChild(aPoster)
+ 				commentDiv.appendChild(aDate)
+ 				br = document.createElement('br')
+ 				commentDiv.appendChild(br)
+ 				commentDiv.appendChild(aContent)
+
+ 				commentsContainer = button.parentElement.parentElement
+ 				commentsDiv = commentsContainer.children[0]
+ 				
+
+ 				commentsDiv.appendChild(commentDiv);
+
+ 				//auto scroll to the bottom
+ 				commentsDiv.scrollTop = commentsDiv.scrollHeight;
+ 				//get post content
+ 				//get post id
+ 				//submit asynchronously to server
+ 				//clear the text area
+ 				//add comment dynamically
+
+ 				// <div>
+     //                <p> {{comment.created_on}}</p>
+
+     //                <p> {{comment.content}}</p> by
+     //                <a href=""> {{comment.poster.username.capitalize}}</a>
+     //            </div>
+ 			}
+ 		})
  	}
 
  } );
 
+
+// function dateToString(date) {
+//     var month = date.getMonth() + 1;
+//     var day = date.getDate();
+//     var dateOfString = (("" + day).length < 2 ? "0" : "") + day + "/";
+//     dateOfString += (("" + month).length < 2 ? "0" : "") + month + "/";
+//     dateOfString += date.getFullYear();
+//     return dateOfString;
+// }
+
+// var currentdate = new Date();
+// var datetime = "Last Sync: ";
+// datetime += dateToString(currentdate );
+// datetime += + currentdate.getHours() + ":"
+//             + currentdate.getMinutes() + ":"
+//             + currentdate.getSeconds();
 

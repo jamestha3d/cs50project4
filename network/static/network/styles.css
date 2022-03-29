@@ -72,9 +72,6 @@ body{
     border-style: outset;
     background-color: white;
     padding-bottom: 70px;
-
-    
-
 }
 
 .posts {
@@ -87,8 +84,7 @@ body{
     border: thin;
     border-style: outset;
     border-radius: 5px;
-    /*background-color: #add8e6;*/*/
-    
+    /*background-color: #add8e6;*/*/    
     
 }
 
@@ -226,6 +222,12 @@ textarea{
     resize: none;
 }
 
+.comments{
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+
 .dashhead{
     background-color: lightgrey;
     width: 100%;
@@ -246,6 +248,42 @@ textarea{
     font-size: 16px;
 }
 
+
+
+.comments{
+    margin-bottom: 10px;
+
+}
+.comment{
+    margin-bottom: 10px;
+}
+.comment_time{
+    font-size: 10px;
+    color: grey;
+    padding-left: 10px;
+    color: grey;
+    
+
+}
+.comment_content{
+    font-size: 15px;
+    
+}
+.comment_poster{
+    font-weight: bold;
+    float: left;
+    font-size: 15px;
+}
+.type_comment {
+
+}
+.comment_text_area{
+    width: 80%;
+}
+.comment_submit{
+    position: relative;
+    bottom: 10px;
+}
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
