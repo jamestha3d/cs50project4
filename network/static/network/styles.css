@@ -2,6 +2,11 @@ body{
 
     background-color: rgba(236, 236, 236, 0.5);
 }
+
+img { 
+    image-rendering: -webkit-optimize-contrast;
+}
+
 .prepost{
     margin: 20px 50px 20px 50px auto;
 }
@@ -70,20 +75,33 @@ body{
     border: thin;
     border-radius: 5px;
     border-style: outset;
+    border-color: rgba(0, 0, 0, 0.2);
     background-color: white;
     padding-bottom: 70px;
 }
 
+.postcontainer2 {
+    display: flex; 
+    border: thin; 
+    border-style: outset; 
+    border-radius: 5px; 
+    border-color: rgba(0, 0, 0, 0.2);
+    width: 90%;
+    margin: 15px auto;
+
+}
 .posts {
     width: 90%;
     height: auto;
     padding: 0px 0px 0px 0px;
-    margin: 15px auto;
+    margin: 10px auto;
     background-color: white;
     border-color: lightgrey;
     border: thin;
-    border-style: outset;
+    border-style: ;
     border-radius: 5px;
+    display: grid;
+    grid-template-columns: 1fr 5fr
     /*background-color: #add8e6;*/*/    
     
 }
@@ -99,14 +117,14 @@ body{
     font-size: 18px;
     font-weight: bold;
     position:relative; 
-    background-color: whitesmoke;
+    /*background-color: whitesmoke;*/
     
 }
 
 /* current user's posts */
 .mypost{
     /*background-color: #b6e3ff;*/
-    background-color: #ddf4ff;
+    /*background-color: #ddf4ff;*/
 }
 
 .date{
@@ -258,6 +276,8 @@ textarea{
     margin-bottom: 10px;
 }
 .comment_time{
+    position: relative;
+    bottom: 3px;
     font-size: 10px;
     color: grey;
     padding-left: 10px;
@@ -275,14 +295,16 @@ textarea{
     font-size: 15px;
 }
 .type_comment {
-
+    width: 100%;
+    margin: 0px auto;
 }
 .comment_text_area{
     width: 80%;
+    margin-bottom: 15px;
 }
 .comment_submit{
     position: relative;
-    bottom: 10px;
+    bottom: 25px;
 }
 .modal {
   display: none; /* Hidden by default */
@@ -346,8 +368,6 @@ textarea{
 }
 
 .modal-body {padding: 2px 16px;}
-
-
 
 
 settings {

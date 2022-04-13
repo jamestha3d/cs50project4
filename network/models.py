@@ -5,8 +5,9 @@ from django.utils import timezone
 import math
 
 class User(AbstractUser, models.Model):
-    followings = models.ManyToManyField('self', related_name="followers", symmetrical=False)
+    followings = models.ManyToManyField('self', blank=True, related_name="followers", symmetrical=False)
     color = models.CharField(max_length=200, default='#ddf4ff')
+    img = models.ImageField(null=True, blank=True, default='default.jpeg')
 
     def __str__(self):
         return f"{self.username} Posts { self.posts.all().count()} follows: {self.followings.all().count()} followers:{self.followers.all().count()} "

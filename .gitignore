@@ -1,0 +1,7 @@
+# Ignore Mac system files
+.DS_store
+
+#ignore sqlite db
+db.sqlite3
+.sqlite
+.sqlite3

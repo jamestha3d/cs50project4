@@ -11,9 +11,16 @@
 
      <div class="followboard">
         <h1 style="font-weight: bold; font-size: 30px"> Welcome, {{user.username.capitalize}}</h1>
-         <a> following:{{ num_following }} </a>
-         <a> followers:{{ num_followers }}</a> 
-         
+
+                 <div class="profile_pic">
+            <img src="{% if user.img %} {{user.img.url}} {% else %} default.jpeg {% endif %}" width="150" height="150" alt="profile_pic" style="border-radius: 50%">
+
+
+        </div>
+        <br> 
+        <a> Following:{{ num_following }} </a>
+         <a> Followers:{{ num_followers }}</a> 
+
          <div class="dropdown">
             <button onclick="myFunction()" class="btn btn-secondary dropbtn" style="color: black; float: right;"> Settings <i class="fa-solid fa-wrench"></i></button>
             <div>
@@ -26,6 +33,12 @@
         </div>
          <br><br>
          <h3> {{ posts_count}} Posts</h3>
+         <form class="form-control" method="POST" action="{% url 'upload' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label> Click 'Browse' To Select an Image On your Device </label>
+            {{ form.as_p }}
+          <input type="submit" value="Upload Photo" class="btn btn-primary">
+        </form>
      </div>
      
 
@@ -35,7 +48,12 @@
         
         <br>
         {% for post in posts %}
-        <div class="posts  ">
+        <div class="postcontainer2" >
+
+        <div class="photo" style="padding-top: 5px; margin: 10px;">
+            <img src="{% if post.poster.img %} {{post.poster.img.url}} {% else %} default.jpeg {% endif %}" width="70" height="70" alt="profile_pic" style="border-radius: 50%">
+        </div>
+        <div class="posts ">
             <div class="posthead" >
                 <div class="poster {%if post.poster.id == user.id%} mypost{% endif %}">
                     <div>
@@ -69,23 +87,37 @@
                         {% endif %}
                     </span><a class="postlikesnum" style="color: darkgrey"> {{post.likes}}</a>
                     
-                        <a style="cursor: pointer; float:right; color: lightgrey;"> 0 Comments</a> 
-
-                    
-                    
+                        <span class="view_comments" style="cursor: pointer; float:right; color: lightgrey;"> <a> </a>{{post.comments.all.count}} Comments<a> </a></span> 
                     
                 </div>
 
 
                 
             </div>
+            <div class="comments_container" style="width: 100%; display: none; padding: 0px 0px 0px 50px;">
+                <div class="comments">
+                {% for comment in post.comments.all %}
+                    <div class= "comment">
+                        <a class="comment_poster" href="{% url 'user' comment.poster.username %}"> {{comment.poster.username.capitalize}}</a>
+                        <a class="comment_time"> {{comment.time}}</a>
+                        <br>
+                        <a class="comment_content"> {{comment.content}}</a>
+                        
+                    </div>
+                {% endfor %}
+                </div>
+                <div class="type_comment">
+                    <textarea id="text{{post.id}}" class="comment_text_area" autofocus="autofocus" name="comment" rows="2" cols="30" placeholder="Type your comment.."> </textarea>
+                    <button class="comment_submit btn btn-sm" data-postid={{post.id}} data-username="{{user.username}}" style="background-color: #ddf4ff"> Comment </button>
+                </div>
+
+                
+            </div>
           </div>
-
-
+        </div>
         {% empty %}
         <h3> No Posts</h3>
         {% endfor %}
-
 
         {% if posts.has_other_pages %}
 

@@ -2,16 +2,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
+
 from django.urls import reverse
 from django import forms
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import *
-
-
-class NewPost(forms.Form):
-    post = forms.CharField(widget=forms.Textarea(attrs={"rows":2, "cols":20, "class": 'form-control'}), label='')
-    post.widget.attrs['placeholder'] = "What's on your mind?"
+from .forms import UploadPhoto, NewPost
     
 
 def index(request):
@@ -82,6 +79,22 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
+
+def image_upload_view(request):
+    """Process images uploaded by users"""
+    if request.method == 'POST':
+        #image is in request.files
+        user= request.user
+        form = UploadPhoto(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse("profile"))
+        else:
+            form = UploadPhoto()
+            return render(request, 'profile.html', {
+                'form': form
+            })
+
 def all_posts(request):
     user = request.user
     if user.is_authenticated:
@@ -119,13 +132,15 @@ def profile(request):
     num_followers = user.followers.all().count()
     current_page = request.GET.get('page', 1)
     page = paginate(posts, current_page)
+    form = UploadPhoto()
 
     return render(request, "network/profile.html", {
         "posts": page,
         "user": user,
         "num_followers": num_followers,
         "num_following": num_following,
-        "posts_count": posts_count
+        "posts_count": posts_count,
+        "form": form
         })
 
 
@@ -151,7 +166,7 @@ def user(request, username):
 
 def make_post(request):
     if request.method == "POST": 
-        content = request.POST["post"].capitalize()
+        content = request.POST["post"].strip().capitalize()
         user = request.user
         create_post = Posts(content=content, poster=user)
         create_post.save()
@@ -160,7 +175,7 @@ def make_post(request):
         return HttpResponseRedirect(reverse("index"))
 
 def comment(request, post_id, comment):
-    content = comment.capitalize()
+    content = comment.strip().capitalize()
     post = Posts.objects.get(pk=post_id)
     user = request.user
     create_comment = Comment(post= post, poster=user, content=content)
@@ -196,7 +211,7 @@ def follow(request, user_id):
 
 def edit(request, post_id, content):
     post = Posts.objects.get(pk=post_id)
-    post.content = content
+    post.content = content.strip().capitalize()
     #ensure that editor is the post owner
     if request.user.id == post.poster.id:
         post.save()

@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
  		}
  	};
 
- 	//select delete button
+ 	//delete post
  	const deleteButton = document.querySelectorAll('.trashcan');
  	if (deleteButton) {
  		deleteButton.forEach(button => {
@@ -220,7 +220,8 @@ document.addEventListener('DOMContentLoaded', () => {
 					
 					//do the rest here
 					modal.style.display = "none";
-					post.parentElement.removeChild(post);
+					container = post.parentElement
+					container.parentElement.removeChild(container);
  					//send info to server
  					deletePost(postId);
 
@@ -232,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
  	};
 
+//toggle view comments
  	const viewComments = document.querySelectorAll('.view_comments');
  	if (viewComments) {
  	 	viewComments.forEach(button => {
@@ -258,6 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
  	};
 
+
+//submit comments
  	const submitComment = document.querySelectorAll('.comment_submit');
  	if (submitComment) {
  		submitComment.forEach(button => {
@@ -303,38 +307,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
  				//auto scroll to the bottom
  				commentsDiv.scrollTop = commentsDiv.scrollHeight;
- 				//get post content
- 				//get post id
- 				//submit asynchronously to server
- 				//clear the text area
- 				//add comment dynamically
 
- 				// <div>
-     //                <p> {{comment.created_on}}</p>
-
-     //                <p> {{comment.content}}</p> by
-     //                <a href=""> {{comment.poster.username.capitalize}}</a>
-     //            </div>
  			}
  		})
  	}
 
  } );
 
-
-// function dateToString(date) {
-//     var month = date.getMonth() + 1;
-//     var day = date.getDate();
-//     var dateOfString = (("" + day).length < 2 ? "0" : "") + day + "/";
-//     dateOfString += (("" + month).length < 2 ? "0" : "") + month + "/";
-//     dateOfString += date.getFullYear();
-//     return dateOfString;
-// }
-
-// var currentdate = new Date();
-// var datetime = "Last Sync: ";
-// datetime += dateToString(currentdate );
-// datetime += + currentdate.getHours() + ":"
-//             + currentdate.getMinutes() + ":"
-//             + currentdate.getSeconds();
 
