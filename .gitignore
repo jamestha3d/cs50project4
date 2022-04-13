@@ -3,5 +3,11 @@
 
 #ignore sqlite db
 db.sqlite3
-.sqlite
-.sqlite3
+*.sqlite
+*.sqlite3
+
+
+#ignore test photos
+*.jpg
+*.png
+*.jpeg
